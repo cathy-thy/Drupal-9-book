@@ -27,7 +27,7 @@
 * [Hook Introduction](custom-modules/hook-introduction/README.md)
   * [hook\_ENTITY\_TYPE\_update](custom-modules/hook-introduction/hook\_entity\_type\_update/README.md)
     * [Sample Code](custom-modules/hook-introduction/hook\_entity\_type\_update/sample-code.md)
-* [Custom CRUD Form](custom-modules/custom-form.md)
-* [Custom Restful API](custom-modules/custom-restful-api.md)
-
-## Hook
+* [Custom CRUD Form](custom-modules/custom-form/README.md)
+  * [Page 1](custom-modules/custom-form/page-1.md)
+* [Custom Restful API](custom-modules/custom-restful-api/README.md)
+  * [Sample Code](custom-modules/custom-restful-api/sample-code.md)
