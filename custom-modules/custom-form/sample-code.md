@@ -271,9 +271,37 @@ If you are curious about how do we know it is setting the path for the form that
 This links to the first line of routing file, "_**my\_custom\_form.studentinfo\_form**_"
 {% endhint %}
 
-#### Visit the form
+#### Visit the form and enter record
 
 ![](../../.gitbook/assets/form4.png)
+
+After submission of the data, you should see it being inserted to the DB.
+
+![](../../.gitbook/assets/form5.png)
+
+### 2.3 Create Link on Menu
+
+&#x20;Instead of entering the url to access to the form everytime, it will be easier to add link on the content menu.&#x20;
+
+In order to do this, you can use the "**my\_custom\_form.links.menu.yml**".&#x20;
+
+<details>
+
+<summary>my_custom_form.links.menu.yml</summary>
+
+```php
+my_custom_form.studentinfo_form:
+  title: 'Student Info Form'
+  route_name: my_custom_form.studentinfo_form
+  parent: system.admin_content
+  weight: -1
+```
+
+</details>
+
+![](../../.gitbook/assets/form7.png)
+
+### 2.4 Create Table for Data Summary
 
 
 
