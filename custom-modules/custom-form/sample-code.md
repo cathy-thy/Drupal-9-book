@@ -250,11 +250,6 @@ $query->insert('studentinfo')
 
 On the ".routing" file, you can specify the location of the form. This time, the path is "_/my\_custom\_form/form/studentinfo/data_"
 
-{% hint style="info" %}
-If you are curious about how do we know it is setting the path for the form we want, you can check "**StudentInfoForm.php**", there is a function "**getFormId()**", we have specified the id ("**studentinfo\_form**") there. \
-This links to the first line of routing file, "_**my\_custom\_form.studentinfo\_form**_"
-{% endhint %}
-
 <details>
 
 <summary>my_custom_form.routing.yml</summary>
@@ -270,6 +265,17 @@ my_custom_form.studentinfo_form:
 ```
 
 </details>
+
+{% hint style="info" %}
+If you are curious about how do we know it is setting the path for the form that we want, you can check "**StudentInfoForm.php**", there is a function "**getFormId()**", we have specified the id ("**studentinfo\_form**") there. \
+This links to the first line of routing file, "_**my\_custom\_form.studentinfo\_form**_"
+{% endhint %}
+
+#### Visit the form
+
+![](../../.gitbook/assets/form4.png)
+
+
 
 
 
