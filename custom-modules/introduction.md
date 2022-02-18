@@ -30,7 +30,7 @@ core_version_requirement:  ^9
 
 After adding the folder, navigate to the Drupal UI, you should be able to view your module on the extent page.
 
-![](<../.gitbook/assets/image (1).png>)
+![](<../.gitbook/assets/image (1) (1).png>)
 
 
 

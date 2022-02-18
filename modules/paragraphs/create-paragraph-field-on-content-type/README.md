@@ -24,6 +24,6 @@ Steps:
 
 #### 3. Add Paragraph type field to content type <mark style="color:green;">"Users"</mark>
 
-![](<../../../.gitbook/assets/para4 (1).png>) ![](<../../../.gitbook/assets/image (1) (1).png>) ![](<../../../.gitbook/assets/para7 (1).png>)
+![](<../../../.gitbook/assets/para4 (1).png>) ![](<../../../.gitbook/assets/image (1) (1) (1).png>) ![](<../../../.gitbook/assets/para7 (1).png>)
 
 ####

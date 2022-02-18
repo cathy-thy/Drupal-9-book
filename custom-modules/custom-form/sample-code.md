@@ -301,11 +301,212 @@ my_custom_form.studentinfo_form:
 
 ![](../../.gitbook/assets/form7.png)
 
-### 2.4 Create Table for Data Summary
+### 2.4 Display Data (Controller)
+
+By using Drupal controller, we can display data that we have.&#x20;
+
+<details>
+
+<summary>StudentInfoController.php</summary>
+
+```php
+<?php
+
+namespace Drupal\my_custom_form\Controller;
+
+use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Database\Database;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
+
+class StudentInfoController extends ControllerBase
+{
+    public function display()
+    {
+
+        //Table Header
+        $header_table = ['id' => t('ID'),
+                         'student_name' => t('Name'),
+                         'student_gender' => t('Gender'),
+                         'student_email' => t('Email'),
+                         'opt' => t('Edit'),
+                         'opt1' => t('Delete'),];
+        $rows = [];
+
+        //Connect to the database and get records from the table
+        $conn = Database::getConnection();
+        $query = $conn->select('studentinfo', 'si');
+        $query->fields('si', ['id','student_name','student_gender','student_email']);
+        $results = $query->execute()->fetchAll();
+
+        foreach ($results as $data) {
+            $delete = Url::fromUserInput('/my_custom_form/form/studentinfo/delete/' . $data->id);
+            $edit = Url::fromUserInput('/my_custom_form/form/studentinfo/data?id=' . $data->id);
+
+            $rows[] = [
+                'id' => $data->id,
+                'student_name' => $data->student_name,
+                'student_gener' => $data->student_gender,
+                'student_email' => $data->student_email,
+                'opt' => Link::fromTextAndUrl('Edit', $edit)->toString(),
+                'opt1' => Link::fromTextAndUrl('Delete', $delete)->toString(),
+            ];
+        }
+
+        $add = Url::fromUserInput('/my_custom_form/form/studentinfo/data');
+        $text = "Add User";
 
 
+        $form['table'] = [
+            '#type' => 'table',
+            '#header' => $header_table,
+            '#rows' => $rows,
+            '#empty' => t('No records found'),
+            '#caption' => Link::fromTextAndUrl($text, $add)->toString(),
+        ];
+        return $form;
+    }
+}
 
+```
 
+</details>
 
+On the routing file, there is a link specified for the display table. So when you enter&#x20;
 
+[http://localhost/d9-demo/web/my\_custom\_form/display/studentinfo](http://localhost/d9-demo/web/my\_custom\_form/display/studentinfo) You will be able to see all data you have.&#x20;
+
+There are two action buttons&#x20;
+
+1. **edit** \
+   The edit button is actually set as follows:\
+   `$edit = Url::fromUserInput('/my_custom_form/form/studentinfo/data?id=' . $data->id);`\
+   Therefore, when you click into it, it will redirect you to the page of your record
+2. **delete**\
+   ****It is also the similar for the delete button. \
+   It is set as \
+   ****`$delete = Url::fromUserInput('/my_custom_form/form/studentinfo/delete/' . $data->id);`\
+   ``But be careful, this time it is redirecting to the "**Delete Form**". For the delete form details, it's mentioned [#2.5-delete-data](sample-code.md#2.5-delete-data "mention").
+
+```php
+my_custom_form.studentinfo_table_controller_display:
+  path: '/my_custom_form/display/studentinfo'
+  defaults:
+    _controller: '\Drupal\my_custom_form\Controller\StudentInfoController::display'
+    _title: 'All Students Info'
+  requirements:
+    _permission: 'access content'
+```
+
+![](<../../.gitbook/assets/image (7).png>)
+
+### 2.5 Delete Data
+
+On the display table, there is delete option.&#x20;
+
+We are creating a form for that. You can see there is "web\modules\custom\my\_custom\_form\src\Form\DeleteStudentInfoForm.php".
+
+This time, we extend "ConfirmFormBase". But the funtions that we are using are actually similar.&#x20;
+
+<details>
+
+<summary>DeleteStudentInfoForm.php</summary>
+
+```php
+<?php
+
+namespace Drupal\my_custom_form\Form;
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\ConfirmFormBase;
+use Drupal\Core\Url;
+
+/**
+ * Delete Form Data
+ */
+class DeleteStudentInfoForm extends ConfirmFormBase
+{
+    public function getFormId()
+    {
+        return 'delete_studentinfo_form';
+    }
+
+    public $cid;
+
+    public function getQuestion()
+    {
+        return t('Do you confirm to delete student record?');
+    }
+
+    public function getCancelUrl()
+    {
+        return new Url('my_custom_form.studentinfo_table_controller_display');
+    }
+
+    public function getDescription()
+    {
+        return t('Confirm if you want to delete selected student record');
+    }
+
+    public function getConfirmText()
+    {
+        return t('Confirm Delete');
+    }
+
+    public function getCancelText()
+    {
+        return t('Cancel');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(array $form, FormStateInterface $form_state, $cid = null)
+    {
+        $this->id = $cid;
+        return parent::buildForm($form, $form_state);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateForm(array &$form, FormStateInterface $form_state)
+    {
+        parent::validateForm($form, $form_state);
+    }
+
+    public function submitForm(array &$form, FormStateInterface $form_state)
+    {
+        $query = \Drupal::database();
+        $query->delete('studentinfo')
+              ->condition('id', $this->id)
+              ->execute();
+        \Drupal::messenger()->addMessage('Successfully delete data.');
+        //drupal_flush_all_caches();
+        cache_clear_all('*', 'cache_data', true);
+        $form_state->setRedirect('my_custom_form.studentinfo_table_controller_display');
+    }
+}
+
+```
+
+</details>
+
+We have to connect to the DB and perform delete query. This is done by:
+
+```
+$query = \Drupal::database();
+$query->delete('studentinfo')
+      ->condition('id', $this->id)
+      ->execute();
+```
+
+### Summary
+
+1. &#x20;Using the "_<mark style="background-color:yellow;">module\_name</mark>_<mark style="background-color:yellow;">.install</mark>", we can create table on DB.
+2. Using the "<mark style="background-color:yellow;">FormBase</mark>", we can create our form.
+3. Using the "_<mark style="background-color:yellow;">module\_name</mark>_<mark style="background-color:yellow;">.links.menu.yml</mark>", we can add item to the menu.
+4. Using the "_<mark style="background-color:yellow;">module\_name</mark>_<mark style="background-color:yellow;">.routing.yml</mark>", we can specify URL for forms that we have added.
+
+&#x20;
 

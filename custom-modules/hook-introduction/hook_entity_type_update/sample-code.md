@@ -10,7 +10,7 @@ View my full code
 
 ### 2. Enable Module
 
-![](<../../../.gitbook/assets/image (7).png>)
+![](<../../../.gitbook/assets/image (7) (1).png>)
 
 ### 3. Code Analysis
 
