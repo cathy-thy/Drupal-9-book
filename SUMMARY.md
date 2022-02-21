@@ -30,4 +30,4 @@
 * [Custom CRUD Form](custom-modules/custom-form/README.md)
   * [Sample Code](custom-modules/custom-form/sample-code.md)
 * [Custom Restful API](custom-modules/custom-restful-api/README.md)
-  * [Sample Code](custom-modules/custom-restful-api/sample-code.md)
+  * [Sample Code - GET v1](custom-modules/custom-restful-api/sample-code-get-v1.md)
